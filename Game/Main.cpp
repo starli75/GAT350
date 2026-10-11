@@ -15,9 +15,9 @@ struct Vertex
 
 std::vector<Vertex> vertices =
 {
-    Vertex{ -1.0f, -1.0f, 0.0f}, // Bottom-Left
-    Vertex{  1.0f, -0.5f, 0.0f}, // Bottom-Right
-    Vertex{  0.0f,  0.5f, 0.0f}, // Top-Middle
+    Vertex{ -0.75f, -1.0f, 0.0f}, // Bottom-Left
+    Vertex{  0.5f, -0.5f, 0.0f}, // Bottom-Right
+    Vertex{  0.0f,  0.75f, 0.0f}, // Top-Middle
 };
 
 int main()
@@ -38,7 +38,8 @@ int main()
     pipeline->AddVertexAttribute(
         0,
         SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3,
-        offsetof(Vertex, x));
+        offsetof(Vertex, x)
+    );
 
     pipeline->Create(*vshader.get(), *fshader.get(),
         Engine::Instance().GetRenderer().GetGPUDevice(),
