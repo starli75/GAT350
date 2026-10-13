@@ -4,6 +4,13 @@
 #include "Renderer/VertexBuffer.h"
 #include "Renderer/Pipeline.h"
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/euler_angles.hpp>
+
+
+
 #include "Resources/ResourceManager.h"
 
 using namespace nu;
@@ -28,6 +35,8 @@ std::vector<Vertex> vertices =
     Vertex{ Vector3{0.5f, -0.5f, 0.0f}, Color4{0, 1, 0, 1}}, // Bottom-Right
     Vertex{ Vector3{ 0.0f,  0.75f, 0.0f}, Color4{0, 0, 1, 1}}, // Top-Middle
 };
+
+
 
 int main()
 {
@@ -64,6 +73,13 @@ int main()
     float scale = 0.5f;
     Color4 color{ 0, 0, 0, 1 };
 
+    struct vertexUniform
+    {
+        glm::mat4 model;
+    };
+
+    vertexUniform uniform;
+
     // MAIN LOOP
     bool quit = false;
     while (!quit) 
@@ -82,19 +98,39 @@ int main()
             }
         }
 
+
+
         // ENGINE
         Engine::Instance().Update();
         float dt = Engine::Instance().GetTime().GetDeltaTime();
+        float time = Engine::Instance().GetTime().GetTime();
 
-        scale = sin(Engine::Instance().GetTime().GetTime());
-        color.r = sin((Engine::Instance().GetTime().GetTime() * 10.0f) * 0.5f + 0.5f);
+        color.r = sin((time * 10.0f) * 0.5f + 0.5f);
+
+        //GLM
+
+
+        auto mxt = glm::translate(glm::mat4{ 1.0f }, glm::vec3(0.5f, 0.0f, 0.0f));
+        //auto mxrx = glm::rotate(glm::mat4{ 1.0f }, time * 3.0f, glm::vec3(1.0f, 0.0f, 1.0f));
+        //auto mxry = glm::rotate(glm::mat4{ 1.0f }, time * 3.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+        //auto mxr = mxrx * mxry;
+        auto mxr = glm::eulerAngleYXZ(1.2f, time * 3.0f, 0.0f );
+        auto mxs = glm::scale(glm::mat4{ 1.0f }, glm::vec3(0.5f, 0.5f, 0.5f));
+
+        uniform.model = mxs * mxr * mxt;
+
+        /*uniform.model = glm::mat4(1.0f);
+        uniform.model = glm::translate(uniform.model, glm::vec3(0.5f, 0.0f, 0.0f));
+        uniform.model = glm::rotate(uniform.model, time * 3.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+        uniform.model = glm::scale(uniform.model, glm::vec3(0.5f, 0.5f, 0.5f));*/
 
         // RENDER
         Engine::Instance().GetRenderer().BeginFrame();
 
         Engine::Instance().GetRenderer().SetPipeline(*pipeline);
         Engine::Instance().GetRenderer().SetVertexBuffer(*vb);
-        Engine::Instance().GetRenderer().SetVertexUniform(0, &scale, sizeof(scale));
+        Engine::Instance().GetRenderer().SetVertexUniform(0, &uniform, sizeof(uniform));
+        //Engine::Instance().GetRenderer().SetVertexUniform(0, &scale, sizeof(scale));
         Engine::Instance().GetRenderer().SetFragmentUniform(0, &color, sizeof(color));
 
         Engine::Instance().GetRenderer().Draw(vb->GetVertexCount());
