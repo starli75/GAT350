@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/euler_angles.hpp>
+#include <glm/gtx/transform.hpp>
 
 
 
@@ -31,9 +32,10 @@ struct Vertex
 
 std::vector<Vertex> vertices =
 {
-    Vertex{ Vector3{ -0.75f, -1.0f, 0.0f}, Color4{1, 0, 0, 1}}, // Bottom-Left
-    Vertex{ Vector3{0.5f, -0.5f, 0.0f}, Color4{0, 1, 0, 1}}, // Bottom-Right
-    Vertex{ Vector3{ 0.0f,  0.75f, 0.0f}, Color4{0, 0, 1, 1}}, // Top-Middle
+    Vertex{ Vector3{ -0.5f, -0.5f, 0.0f}, Color4{1, 0, 0, 1}}, // Bottom-Left
+    Vertex{ Vector3{  0.5f, -0.5f, 0.0f}, Color4{0, 1, 0, 1}}, // Bottom-Right
+    Vertex{ Vector3{  0.5f,  0.5f, 0.0f}, Color4{0, 0, 1, 1}}, // Top-Right
+    Vertex{ Vector3{ -0.5f,  0.5f, 0.0f}, Color4{0, 1, 1, 1}}, // Top-Left
 };
 
 
@@ -75,10 +77,11 @@ int main()
 
     struct vertexUniform
     {
-        glm::mat4 model;
+        glm::mat4 mvp;
     };
 
     vertexUniform uniform;
+    glm::vec3 cameraPosition{ 0, 0, 5 };
 
     // MAIN LOOP
     bool quit = false;
@@ -107,22 +110,48 @@ int main()
 
         color.r = sin((time * 10.0f) * 0.5f + 0.5f);
 
+        glm::vec3 direction{ 0 };
+        if (Engine::Instance().GetInput().GetKeyDown(SDL_SCANCODE_A)) direction.x = -1;
+        if (Engine::Instance().GetInput().GetKeyDown(SDL_SCANCODE_D)) direction.x = +1;
+        if (Engine::Instance().GetInput().GetKeyDown(SDL_SCANCODE_W)) direction.y = +1;
+        if (Engine::Instance().GetInput().GetKeyDown(SDL_SCANCODE_S)) direction.y = -1;
+        if (Engine::Instance().GetInput().GetKeyDown(SDL_SCANCODE_Q)) direction.z = +1;
+        if (Engine::Instance().GetInput().GetKeyDown(SDL_SCANCODE_E)) direction.z = -1;
+
+        cameraPosition += direction * 4.0f * dt;
+
         //GLM
 
+        //uniform.model = glm::translate(uniform.model, glm::vec3(0.5f, 0.0f, 0.0f));
+        //uniform.model = glm::rotate(uniform.model, time * 3.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+        //uniform.model = glm::scale(uniform.model, glm::vec3(0.5f, 0.5f, 0.5f));
+        //uniform.model = glm::mat4(1.0f);
 
-        auto mxt = glm::translate(glm::mat4{ 1.0f }, glm::vec3(0.5f, 0.0f, 0.0f));
-        //auto mxrx = glm::rotate(glm::mat4{ 1.0f }, time * 3.0f, glm::vec3(1.0f, 0.0f, 1.0f));
-        //auto mxry = glm::rotate(glm::mat4{ 1.0f }, time * 3.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-        //auto mxr = mxrx * mxry;
-        auto mxr = glm::eulerAngleYXZ(1.2f, time * 3.0f, 0.0f );
-        auto mxs = glm::scale(glm::mat4{ 1.0f }, glm::vec3(0.5f, 0.5f, 0.5f));
+        // 1 0 0 x
+        // 0 1 0 y
+        // 0 0 1 z
+        // 0 0 0 1
 
-        uniform.model = mxs * mxr * mxt;
+        auto mxt = glm::translate(glm::vec3(0.0f, 0.0f, 0.0f));
+        auto mxr = glm::eulerAngleYXZ(0.0f, 0.0f, time * 3.0f);
 
-        /*uniform.model = glm::mat4(1.0f);
-        uniform.model = glm::translate(uniform.model, glm::vec3(0.5f, 0.0f, 0.0f));
-        uniform.model = glm::rotate(uniform.model, time * 3.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-        uniform.model = glm::scale(uniform.model, glm::vec3(0.5f, 0.5f, 0.5f));*/
+        // x 0 0 0
+        // 0 y 0 0
+        // 0 0 z 0
+        // 0 0 0 1
+        auto mxs = glm::scale(glm::vec3( 2 ));
+
+        auto model = mxt * mxr * mxs;
+
+        //VIEW MATRIX
+        auto view = glm::lookAtRH(cameraPosition, cameraPosition + glm::vec3{ 0, 0, -1 }, glm::vec3{ 0, 1, 0});
+
+        //PROJECTION MATRIX
+        float aspectRatio = Engine::Instance().GetRenderer().GetWidth() / (float)Engine::Instance().GetRenderer().GetHeight();
+        auto projection = glm::perspective(glm::radians(70.0f), aspectRatio, 0.01f, 20.0f);
+
+        uniform.mvp = projection * view * model;
+
 
         // RENDER
         Engine::Instance().GetRenderer().BeginFrame();
@@ -130,7 +159,6 @@ int main()
         Engine::Instance().GetRenderer().SetPipeline(*pipeline);
         Engine::Instance().GetRenderer().SetVertexBuffer(*vb);
         Engine::Instance().GetRenderer().SetVertexUniform(0, &uniform, sizeof(uniform));
-        //Engine::Instance().GetRenderer().SetVertexUniform(0, &scale, sizeof(scale));
         Engine::Instance().GetRenderer().SetFragmentUniform(0, &color, sizeof(color));
 
         Engine::Instance().GetRenderer().Draw(vb->GetVertexCount());
