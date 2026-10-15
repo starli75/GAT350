@@ -2,6 +2,7 @@
 #include "Core/File.h"
 #include "Renderer/Shader.h"
 #include "Renderer/VertexBuffer.h"
+#include "Renderer/IndexBuffer.h"
 #include "Renderer/Pipeline.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
@@ -38,7 +39,7 @@ std::vector<Vertex> vertices =
     Vertex{ Vector3{ -0.5f,  0.5f, 0.0f}, Color4{0, 1, 1, 1}}, // Top-Left
 };
 
-
+std::vector<uint32_t> indices = { 0, 1, 2, 2, 3, 0 };
 
 int main()
 {
@@ -48,7 +49,10 @@ int main()
     Engine::Instance().Initialize();
 
     auto vb = std::make_shared<VertexBuffer>();
-    vb->Create<Vertex>(vertices, Engine::Instance().GetRenderer().GetGPUDevice());
+    vb->Create<Vertex>(vertices, Engine::Instance().GetRenderer());
+
+    auto ib = std::make_shared<IndexBuffer>();
+    ib->Create(indices, Engine::Instance().GetRenderer());
 
     auto vshader = Resources().Get<nu::Shader>("shaders/position.vert", Engine::Instance().GetRenderer(), 1);
     auto fshader = Resources().Get<nu::Shader>("shaders/color.frag", Engine::Instance().GetRenderer(), 1);
@@ -158,10 +162,12 @@ int main()
 
         Engine::Instance().GetRenderer().SetPipeline(*pipeline);
         Engine::Instance().GetRenderer().SetVertexBuffer(*vb);
+        Engine::Instance().GetRenderer().SetIndexBuffer(*ib);
         Engine::Instance().GetRenderer().SetVertexUniform(0, &uniform, sizeof(uniform));
         Engine::Instance().GetRenderer().SetFragmentUniform(0, &color, sizeof(color));
 
-        Engine::Instance().GetRenderer().Draw(vb->GetVertexCount());
+        
+        Engine::Instance().GetRenderer().DrawIndex(*ib);
 
         Engine::Instance().GetRenderer().EndFrame();
 
