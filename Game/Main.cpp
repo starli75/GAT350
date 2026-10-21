@@ -1,5 +1,6 @@
 #include "Engine.h"
 #include "Core/File.h"
+#include "Math/Transform.h"
 #include "Renderer/Shader.h"
 #include "Renderer/VertexBuffer.h"
 #include "Renderer/IndexBuffer.h"
@@ -54,8 +55,8 @@ int main()
     auto ib = std::make_shared<IndexBuffer>();
     ib->Create(indices, Engine::Instance().GetRenderer());
 
-    auto vshader = Resources().Get<nu::Shader>("shaders/position.vert", Engine::Instance().GetRenderer(), 1);
-    auto fshader = Resources().Get<nu::Shader>("shaders/color.frag", Engine::Instance().GetRenderer(), 1);
+    auto vshader = Resources().Get<nu::Shader>("shaders/unlit.vert", Engine::Instance().GetRenderer(), 1);
+    auto fshader = Resources().Get<nu::Shader>("shaders/unlit.frag", Engine::Instance().GetRenderer(), 1);
 
     auto pipeline = std::make_shared<Pipeline>();
     pipeline->AddVertexBuffer(sizeof(Vertex));
@@ -68,7 +69,7 @@ int main()
     //color
     pipeline->AddVertexAttribute(
         1,
-        SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4,
+        SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2,
         offsetof(Vertex, color)
     );
 
@@ -86,6 +87,8 @@ int main()
 
     vertexUniform uniform;
     glm::vec3 cameraPosition{ 0, 0, 5 };
+
+    Transform transform;
 
     // MAIN LOOP
     bool quit = false;
@@ -124,28 +127,8 @@ int main()
 
         cameraPosition += direction * 4.0f * dt;
 
-        //GLM
-
-        //uniform.model = glm::translate(uniform.model, glm::vec3(0.5f, 0.0f, 0.0f));
-        //uniform.model = glm::rotate(uniform.model, time * 3.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-        //uniform.model = glm::scale(uniform.model, glm::vec3(0.5f, 0.5f, 0.5f));
-        //uniform.model = glm::mat4(1.0f);
-
-        // 1 0 0 x
-        // 0 1 0 y
-        // 0 0 1 z
-        // 0 0 0 1
-
-        auto mxt = glm::translate(glm::vec3(0.0f, 0.0f, 0.0f));
-        auto mxr = glm::eulerAngleYXZ(0.0f, 0.0f, time * 3.0f);
-
-        // x 0 0 0
-        // 0 y 0 0
-        // 0 0 z 0
-        // 0 0 0 1
-        auto mxs = glm::scale(glm::vec3( 2 ));
-
-        auto model = mxt * mxr * mxs;
+        //TRANSFORM
+        transform.rotation.z = time * 90;
 
         //VIEW MATRIX
         auto view = glm::lookAtRH(cameraPosition, cameraPosition + glm::vec3{ 0, 0, -1 }, glm::vec3{ 0, 1, 0});
@@ -154,7 +137,8 @@ int main()
         float aspectRatio = Engine::Instance().GetRenderer().GetWidth() / (float)Engine::Instance().GetRenderer().GetHeight();
         auto projection = glm::perspective(glm::radians(70.0f), aspectRatio, 0.01f, 20.0f);
 
-        uniform.mvp = projection * view * model;
+        //MVP
+        uniform.mvp = projection * view * transform.GetMatrix();
 
 
         // RENDER

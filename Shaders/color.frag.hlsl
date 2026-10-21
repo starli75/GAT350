@@ -5,7 +5,7 @@ cbuffer Uniforms : register(b0, space3)
 
 struct Input
 {
-    float4 color : TEXCOORD0;
+    float4 texcoord : TEXCOORD0;
 };
 
 struct Output
@@ -16,7 +16,7 @@ struct Output
 Output main(Input input)
 {
 	Output output;
-    output.color = input.color;  //float4(0.0f, 0.0f, 1.0f, 1.0f);
+    output.color = input.texcoord;  //float4(0.0f, 0.0f, 1.0f, 1.0f);
 
 	return output;
 }
