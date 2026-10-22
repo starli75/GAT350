@@ -36,10 +36,11 @@ int main()
     // INITIALIZATION
     Engine::Instance().Initialize();
 
-    auto model = Resources().Get<Model>("models/suzanne.obj", Engine::Instance().GetRenderer());
+    auto model = Resources().Get<Model>("models/spot.obj", Engine::Instance().GetRenderer());
+    auto texture = Resources().Get<Texture>("textures/spot_diffuse.png", Engine::Instance().GetRenderer());
 
     auto vshader = Resources().Get<nu::Shader>("shaders/unlit.vert", Engine::Instance().GetRenderer(), 1);
-    auto fshader = Resources().Get<nu::Shader>("shaders/unlit.frag", Engine::Instance().GetRenderer(), 1);
+    auto fshader = Resources().Get<nu::Shader>("shaders/unlit.frag", Engine::Instance().GetRenderer(), 1, 1);
 
     auto pipeline = std::make_shared<Pipeline>();
 
@@ -136,6 +137,7 @@ int main()
         Engine::Instance().GetRenderer().SetPipeline(*pipeline);
         Engine::Instance().GetRenderer().SetVertexUniform(0, &uniform, sizeof(uniform));
         Engine::Instance().GetRenderer().SetFragmentUniform(0, &color, sizeof(color));
+        Engine::Instance().GetRenderer().SetFragmentTexture(0, *texture);
 
         model->Draw(Engine::Instance().GetRenderer());
 

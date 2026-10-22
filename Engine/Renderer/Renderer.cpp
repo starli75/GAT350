@@ -19,14 +19,14 @@ namespace nu
 
         SDL_Init(SDL_INIT_VIDEO);
 
-        if (!TTF_Init()) 
+        if (!TTF_Init())
         {
             std::cerr << "TTF_Init Error: " << SDL_GetError() << std::endl;
             return false;
         }
 
         m_window = SDL_CreateWindow(name, width, height, 0);
-        if (m_window == nullptr) 
+        if (m_window == nullptr)
         {
             std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
             SDL_Quit();
@@ -164,45 +164,45 @@ namespace nu
     }
 
 
-    void Renderer::DrawTexture(const Texture& texture, float x, float y, float angle, float scale, bool flipH, const Vector2& origin) const
-    {
-        Vector2 size = texture.GetSize();
+    //void Renderer::DrawTexture(const Texture& texture, float x, float y, float angle, float scale, bool flipH, const Vector2& origin) const
+    //{
+    //    Vector2 size = texture.GetSize();
 
-        float cameraX = (m_cameraEnabled) ? (m_camera.x - m_width * 0.5f) : 0.0f;
-        float cameraY = (m_cameraEnabled) ? (m_camera.y - m_height * 0.5f) : 0.0f;
+    //    float cameraX = (m_cameraEnabled) ? (m_camera.x - m_width * 0.5f) : 0.0f;
+    //    float cameraY = (m_cameraEnabled) ? (m_camera.y - m_height * 0.5f) : 0.0f;
 
-        SDL_FRect destRect;
-        destRect.w = size.x * scale;
-        destRect.h = size.y * scale;
+    //    SDL_FRect destRect;
+    //    destRect.w = size.x * scale;
+    //    destRect.h = size.y * scale;
 
-        destRect.x = (x - cameraX) - (destRect.w * origin.x);
-        destRect.y = (y - cameraY) - (destRect.h * origin.y);
+    //    destRect.x = (x - cameraX) - (destRect.w * origin.x);
+    //    destRect.y = (y - cameraY) - (destRect.h * origin.y);
 
-        // https://wiki.libsdl.org/SDL3/SDL_RenderTexture
-        SDL_RenderTextureRotated(m_renderer, texture.m_texture, NULL, &destRect, angle, NULL, (flipH) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
-    }
+    //    // https://wiki.libsdl.org/SDL3/SDL_RenderTexture
+    //    SDL_RenderTextureRotated(m_renderer, texture.m_texture, NULL, &destRect, angle, NULL, (flipH) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+    //}
 
-    void Renderer::DrawTexture(const Texture& texture, const Rect& source, float x, float y, float angle, float scale, bool flipH, const Vector2& origin) const
-    {
-        float cameraX = (m_cameraEnabled) ? (m_camera.x - m_width * 0.5f) : 0.0f;
-        float cameraY = (m_cameraEnabled) ? (m_camera.y - m_height * 0.5f) : 0.0f;
+    //void Renderer::DrawTexture(const Texture& texture, const Rect& source, float x, float y, float angle, float scale, bool flipH, const Vector2& origin) const
+    //{
+    //    float cameraX = (m_cameraEnabled) ? (m_camera.x - m_width * 0.5f) : 0.0f;
+    //    float cameraY = (m_cameraEnabled) ? (m_camera.y - m_height * 0.5f) : 0.0f;
 
-        SDL_FRect sourceRect;
-        sourceRect.x = source.x;
-        sourceRect.y = source.y;
-        sourceRect.w = source.w;
-        sourceRect.h = source.h;
+    //    SDL_FRect sourceRect;
+    //    sourceRect.x = source.x;
+    //    sourceRect.y = source.y;
+    //    sourceRect.w = source.w;
+    //    sourceRect.h = source.h;
 
-        SDL_FRect destRect;
-        destRect.w = source.w * scale;
-        destRect.h = source.h * scale;
+    //    SDL_FRect destRect;
+    //    destRect.w = source.w * scale;
+    //    destRect.h = source.h * scale;
 
-        destRect.x = (x - cameraX) - (destRect.w * origin.x);
-        destRect.y = (y - cameraY) - (destRect.h * origin.y);
+    //    destRect.x = (x - cameraX) - (destRect.w * origin.x);
+    //    destRect.y = (y - cameraY) - (destRect.h * origin.y);
 
-        // https://wiki.libsdl.org/SDL3/SDL_RenderTexture
-        SDL_RenderTextureRotated(m_renderer, texture.m_texture, &sourceRect, &destRect, angle, NULL, (flipH) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
-    }
+    //    // https://wiki.libsdl.org/SDL3/SDL_RenderTexture
+    //    SDL_RenderTextureRotated(m_renderer, texture.m_texture, &sourceRect, &destRect, angle, NULL, (flipH) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+    //}
 
     //Maybe renderer is being passed in null here?
     void Renderer::SetPipeline(const Pipeline& pipeline)
@@ -314,6 +314,17 @@ namespace nu
         };
 
         m_depthTexture = SDL_CreateGPUTexture(m_gpuDevice, &depthInfo);
+    }
+
+    void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture)
+    {
+        SDL_GPUTextureSamplerBinding binding
+        {
+            .texture = texture.m_gpuTexture,
+            .sampler = texture.m_gpuSampler
+        };
+
+        SDL_BindGPUFragmentSamplers(m_renderPass, slot, &binding, 1);
     }
 }
 

@@ -68,28 +68,28 @@ namespace nu
 	}
 
 	// get texture source rectangle from the tile id
-	Rect Tilemap::GetTileRect(const Layer& layer, int tileId)
-	{
-		// tile id 0 is blank tile, return empty rect
-		if (tileId == 0) return Rect();
+	//Rect Tilemap::GetTileRect(const Layer& layer, int tileId)
+	//{
+	//	// tile id 0 is blank tile, return empty rect
+	//	if (tileId == 0) return Rect();
 
-		Vector2 textureSize = layer.texture->GetSize();
-		// get the number of tiles in a row (texture size / tile width size)
-		int tilesPerRow = (int)(textureSize.x / m_tileWidth);
+	//	Vector2 textureSize = layer.texture->GetSize();
+	//	// get the number of tiles in a row (texture size / tile width size)
+	//	int tilesPerRow = (int)(textureSize.x / m_tileWidth);
 
-		// get the column / row of the tile
-		int column = (tileId - 1) % tilesPerRow;
-		int row = (tileId - 1) / tilesPerRow;
+	//	// get the column / row of the tile
+	//	int column = (tileId - 1) % tilesPerRow;
+	//	int row = (tileId - 1) / tilesPerRow;
 
-		// return source rectangle of tile in texture
-		return Rect
-		{
-			(float)(column * m_tileWidth),
-			(float)(row * m_tileHeight),
-			(float)(m_tileWidth),
-			(float)(m_tileHeight)
-		};
-	}
+	//	// return source rectangle of tile in texture
+	//	return Rect
+	//	{
+	//		(float)(column * m_tileWidth),
+	//		(float)(row * m_tileHeight),
+	//		(float)(m_tileWidth),
+	//		(float)(m_tileHeight)
+	//	};
+	//}
 
 	// get the tile position from the tile index (index into tile data)
 	Vector2 Tilemap::GetTilePosition(const Layer& layer, int tileIndex)
