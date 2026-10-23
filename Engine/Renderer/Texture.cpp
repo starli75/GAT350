@@ -176,10 +176,10 @@ namespace nu
 
 		// record the copy with SDL_UploadToGPUTexture(copyPass, &transferInfo, &region, false)
 		// todo
-
+		SDL_UploadToGPUTexture(copyPass, &transferInfo, &textureRegion, false);
 		// end the copy pass with SDL_EndGPUCopyPass(copyPass)
 		// todo
-
+		SDL_EndGPUCopyPass(copyPass);
 		// submit the command buffer so the gpu runs the copy
 		if (!SDL_SubmitGPUCommandBuffer(commandBuffer))
 		{

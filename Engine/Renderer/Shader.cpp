@@ -26,7 +26,7 @@ namespace nu
 		// otherwise print an error with std::cerr and return false
 		// hint: filename.find(".vert") != std::string::npos is true when ".vert" is in the filename
 		SDL_GPUShaderStage stage{};
-		if (filename.find("vert") != std::string::npos)
+		if (filename.find(".vert") != std::string::npos)
 		{
 			stage = SDL_GPU_SHADERSTAGE_VERTEX;
 		}
