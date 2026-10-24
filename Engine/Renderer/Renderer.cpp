@@ -33,6 +33,7 @@ namespace nu
             return false;
         }
 
+        SDL_SetHint(SDL_HINT_GPU_DRIVER, "vulkan");
         SDL_GPUShaderFormat formats = SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL;
         m_gpuDevice = SDL_CreateGPUDevice(formats, true, NULL);
         if (!m_gpuDevice)
@@ -49,6 +50,7 @@ namespace nu
         // print out the driver being utilized (e.g., "vulkan" or "d3d12")
         std::cout << "GPU Driver Initialized: " << SDL_GetGPUDeviceDriver(m_gpuDevice) << std::endl;
 
+        CreateDepthBuffer();
 
         return true;
     }

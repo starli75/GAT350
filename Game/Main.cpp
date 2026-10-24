@@ -77,7 +77,7 @@ int main()
         .lightDirection { 0, -1, 0 },
         .lightColor{ 0, 0, 1 },
         .lightIntensity{ 1 },
-        .ambient{ 0.9f }
+        .ambient{ 0.5f }
     };
 
     glm::vec3 cameraPosition{ 0, 0, 5 };
