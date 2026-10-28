@@ -11,6 +11,7 @@
 #include "Resources/ResourceManager.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
+#define CHECK_UNIFORM_BOUNDARY(T) static_assert((sizeof(T)) % 16 == 0);
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/euler_angles.hpp>
@@ -52,8 +53,11 @@ int main()
     auto model = Resources().Get<Model>("models/spot.obj", Engine::Instance().GetRenderer());
     auto texture = Resources().Get<Texture>("textures/spot_diffuse.png", Engine::Instance().GetRenderer());
 
-    auto vshader = Resources().Get<nu::Shader>("shaders/gouraud.vert", Engine::Instance().GetRenderer(), 2);
+    //Change this for assignment
+    auto vshader = Resources().Get<nu::Shader>("shaders/gouraud.vert", Engine::Instance().GetRenderer(), 3);
     auto fshader = Resources().Get<nu::Shader>("shaders/gouraud.frag", Engine::Instance().GetRenderer(), 1, 1);
+    //auto vshader = Resources().Get<nu::Shader>("shaders/phong.vert", Engine::Instance().GetRenderer(), 3);
+    //auto fshader = Resources().Get<nu::Shader>("shaders/phong.frag", Engine::Instance().GetRenderer(), 3, 1);
 
 
     pipeline->Create(*vshader.get(), *fshader.get(), Engine::Instance().GetRenderer().GetGPUDevice(), Engine::Instance().GetRenderer().GetWindow());
@@ -66,6 +70,7 @@ int main()
         glm::vec3 cameraPosition;
         float padding1;
     };
+    CHECK_UNIFORM_BOUNDARY(VertexUniform);
 
     VertexUniform vertexUniform;
 
@@ -74,24 +79,27 @@ int main()
         glm::vec3 position;
         LightType type;
         glm::vec3 direction;
-        float innerCutoff;
+        float range;
         glm::vec3 color;
         float intensity;
         glm::vec3 ambient;
+        float innerCutoff;
         float outerCutoff;
+        glm::vec3 padding;
     };
+    CHECK_UNIFORM_BOUNDARY(LightUniform);
 
     LightUniform lightUniform{
         //global light in the room
         .position{ 10, 10, 10},
         .type{ LightType::Point },
         .direction { 0, -1, 0 },
-        .innerCutoff{ 0.3f },
+        .range { 40 },
         .color{ 1, 1, 1 },
         .intensity{ 1 },
         .ambient{ 0.1f }, 
+        .innerCutoff{ 0.3f },
         .outerCutoff{ 1.6f }
-
     };
 
     struct MaterialUniform
@@ -100,7 +108,9 @@ int main()
         glm::vec2 tiling;
         glm::vec2 offset;
         float shininess;
+        glm::vec3 padding;
     };
+    CHECK_UNIFORM_BOUNDARY(MaterialUniform);
 
     MaterialUniform materialUniform
     {
@@ -156,7 +166,10 @@ int main()
         if (Engine::Instance().GetInput().GetKeyDown(SDL_SCANCODE_3))
         {
             lightUniform.type = LightType::Spot;
-            lightUniform.position = glm::vec3{ 0, 30, 0 };
+            lightUniform.position = glm::vec3{ 0, 10, 0 };
+            lightUniform.innerCutoff = glm::cos(glm::radians(5.0f));
+            lightUniform.outerCutoff = glm::cos(glm::radians(10.0f));
+
         }
         //materialUniform.offset.x = time * 0.2f;
         //materialUniform.tiling = glm::vec2{ 2.0f };
@@ -186,7 +199,10 @@ int main()
         Engine::Instance().GetRenderer().SetVertexUniform(1, &lightUniform, sizeof(lightUniform));
         Engine::Instance().GetRenderer().SetVertexUniform(2, &materialUniform, sizeof(materialUniform));
 
-        Engine::Instance().GetRenderer().SetFragmentUniform(0, &materialUniform, sizeof(materialUniform));
+        Engine::Instance().GetRenderer().SetFragmentUniform(0, &vertexUniform, sizeof(vertexUniform));
+        Engine::Instance().GetRenderer().SetFragmentUniform(1, &lightUniform, sizeof(lightUniform));
+        Engine::Instance().GetRenderer().SetFragmentUniform(2, &materialUniform, sizeof(materialUniform));
+
         Engine::Instance().GetRenderer().SetFragmentTexture(0, *texture);
 
         model->Draw(Engine::Instance().GetRenderer());
