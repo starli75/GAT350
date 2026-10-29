@@ -48,23 +48,21 @@ float3 getLightVector(Light light, float3 position, out float attenuation)
             break;
         case LIGHT_POINT:
             {
-            
                 float3 toLight = light.position - position;
                 float distance = length(toLight);
                 attenuation = calculateAttenuation(distance, light.range);
                 L = toLight / distance;
-                break;
             }
+                break;
         case LIGHT_SPOT:
             {
-            
                 float3 toLight = normalize(light.position - position);
                 float distance = length(toLight);
                 L = toLight / distance;
                 attenuation = calculateAttenuation(distance, light.range);
                 attenuation *= smoothstep(light.outerCutoff, light.innerCutoff, dot(-L, light.direction));
-                break;
             }
+                break;
     }
     
     return L;
@@ -83,10 +81,8 @@ float3 calculateSpecular(float3 radiance, float3 N, float3 L, float3 V, Material
     
     if (dot(N, L) > 0)
     {
-        //R might need to be removed
-        float3 R = reflect(-L, N);
         float3 H = normalize(V + L);
-        float3 HdotN = saturate(dot(R, V));
+        float3 HdotN = saturate(dot(H, N));
         HdotN = pow(HdotN, material.shininess);
         specular = radiance * HdotN;
     }

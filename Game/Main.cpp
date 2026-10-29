@@ -114,10 +114,10 @@ int main()
 
     MaterialUniform materialUniform
     {
-        .color{1, 1, 1, 1},
+        .color{1, 0, 1, 1},
         .tiling{ 1.0f, 1.0f },
         .offset{ 0.0f, 0.0f},
-        .shininess{ 128.0f }
+        .shininess{ 64.0f }
     };
 
     vertexUniform.cameraPosition = glm::vec3{ 0, 0, 5 };
@@ -184,7 +184,7 @@ int main()
         auto view = glm::lookAtRH(vertexUniform.cameraPosition, vertexUniform.cameraPosition + glm::vec3{ 0, 0, -1 }, glm::vec3{ 0, 1, 0});
 
         //PROJECTION MATRIX
-        float aspectRatio = Engine::Instance().GetRenderer().GetWidth() / (float)Engine::Instance().GetRenderer().GetHeight();
+        float aspectRatio = Engine::Instance().GetRenderer().GetWidth() / static_cast<float>(Engine::Instance().GetRenderer().GetHeight());
         auto projection = glm::perspective(glm::radians(70.0f), aspectRatio, 0.01f, 20.0f);
 
         //MVP
