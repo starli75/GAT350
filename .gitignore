@@ -361,3 +361,21 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+#--------------------------------------------------------------------------------
+#Project Overrides
+#--------------------------------------------------------------------------------
+
+#3D model files
+!Build/Assets/**/*.obj
+
+#Third party lib
+!ThirdParty/**/[Bb]in/
+!ThirdParty/**/[Ll]ib/
+!ThirdParty/**/x64/
+!ThirdParty/**/x86/
+!ThirdParty/**/[Dd]ebug/
+!ThirdParty/**/[Rr]elease/
+!ThirdParty/**/*.lib
+!ThirdParty/**/*.dll
+!ThirdParty/**/*.pdb
