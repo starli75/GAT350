@@ -52,10 +52,10 @@ int main()
     auto texture = Resources().Get<Texture>("textures/spot_diffuse.png", Engine::Instance().GetRenderer());
 
     //Change this for assignment
-    //auto fshader = Resources().Get<nu::Shader>("shaders/gouraud.frag", Engine::Instance().GetRenderer(), 3, 1);
-    //auto vshader = Resources().Get<nu::Shader>("shaders/gouraud.vert", Engine::Instance().GetRenderer(), 3);
-    auto vshader = Resources().Get<nu::Shader>("shaders/phong.vert", Engine::Instance().GetRenderer(), 3);
-    auto fshader = Resources().Get<nu::Shader>("shaders/phong.frag", Engine::Instance().GetRenderer(), 3, 1);
+    auto fshader = Resources().Get<nu::Shader>("shaders/gouraud.frag", Engine::Instance().GetRenderer(), 3, 1);
+    auto vshader = Resources().Get<nu::Shader>("shaders/gouraud.vert", Engine::Instance().GetRenderer(), 3);
+    //auto vshader = Resources().Get<nu::Shader>("shaders/phong.vert", Engine::Instance().GetRenderer(), 3);
+    // auto fshader = Resources().Get<nu::Shader>("shaders/phong.frag", Engine::Instance().GetRenderer(), 3, 1);
 
 
     pipeline->Create(*vshader.get(), *fshader.get(), 
@@ -101,12 +101,12 @@ int main()
     Light light1
     {
         //global light in the room
-        .position{ 10, 10, 10},
+        .position{ 5, 5, 5 },
         .type{ LightType::Point },
         .direction { 0, -1, 0 },
         .range { 400 },
         .color{ 1, 0, 0 },
-        .intensity{ 0.5 },
+        .intensity{ 1.0 },
         .ambient{ 0.3f }, 
         .innerCutoff{ 0.3f },
         .outerCutoff{ 1.6f }
@@ -119,7 +119,7 @@ int main()
         .direction { 0, 1, 3 },
         .range { 400 },
         .color{ 0, 0, 1 },
-        .intensity{ 0.5 },
+        .intensity{ 1.0 },
         .ambient{ 0.5f },
         .innerCutoff{ 0.3f },
         .outerCutoff{ 0.6f }
@@ -133,7 +133,7 @@ int main()
         .direction { 0, -1, 0 },
         .range { 400 },
         .color{ 0, 1, 0 },
-        .intensity{ 0.5 },
+        .intensity{ 1.0 },
         .ambient{ 0.5f },
         .innerCutoff{ 0.3f },
         .outerCutoff{ 1.6f }
@@ -143,7 +143,7 @@ int main()
     lightUniform.lights[1] = light2;
     lightUniform.lights[2] = light3;
     lightUniform.numLights = 3;
-    lightUniform.ambient = glm::vec3{ 0.4f };
+    lightUniform.ambient = glm::vec3{ 0.1f };
 
     struct MaterialUniform
     {
@@ -158,7 +158,7 @@ int main()
     MaterialUniform materialUniform
     {
         .color{1, 1, 1, 1},
-        .tiling{ 10.0f, 10.0f },
+        .tiling{ 1.0f, 1.0f },
         .offset{ 0.0f, 0.0f},
         .shininess{ 32.0f }
     };
@@ -196,8 +196,8 @@ int main()
         //SCENE
         scene.Update(dt);
 
-        lightUniform.lights[0].position = glm::eulerAngleY(time) * glm::vec4{ 0, 0, 10, 1};
-        lightUniform.lights[1].position = glm::eulerAngleY(time * 0.5f) * glm::vec4{ 0, 0, 10, 1};
+        //lightUniform.lights[0].position = glm::eulerAngleY(time) * glm::vec4{ 0, 0, 10, 1};
+        //lightUniform.lights[1].position = glm::eulerAngleY(time * 0.5f) * glm::vec4{ 0, 0, 10, 1};
 
        
 

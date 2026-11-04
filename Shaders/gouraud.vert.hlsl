@@ -46,6 +46,9 @@ Output main(Input input)
     float3 N = normalize(mul((float3x3)model, input.normal));
     float3 V = normalize(cameraPosition - worldPosition);
     
+    output.diffuse = ambiant;
+    output.specular = 0;    
+    
     for (uint i = 0; i < numLights; i++)
     {
         calculateLighting(lights[i], material, worldPosition, N, V, output.diffuse, output.specular);
