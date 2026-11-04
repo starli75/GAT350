@@ -97,7 +97,7 @@ namespace nu
 
 		// if the shader is null, creation failed
 		// print an error with std::cerr that includes SDL_GetError() and return false
-		if (!m_gpuShader)
+		if (m_gpuShader == nullptr)
 		{
 			std::cerr << "Could not create shader: " << shaderFilename << " " << SDL_GetError() << std::endl;
 			return false;

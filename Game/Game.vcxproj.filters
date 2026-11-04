@@ -5,8 +5,19 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Assets\Scenes">
+      <UniqueIdentifier>{31222c3e-e4f3-4764-8ee7-88a4e5ffe418}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Materials">
+      <UniqueIdentifier>{1b3acf29-7919-4ea9-9931-bb9308d6e5b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Build\Assets\scenes\scene.json">
+      <Filter>Assets\Scenes</Filter>
+    </None>
   </ItemGroup>
 </Project>

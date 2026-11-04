@@ -46,7 +46,7 @@ float3 getLightVector(Light light, float3 position, out float attenuation)
     switch (light.type)
     {
         case LIGHT_DIRECTIONAL:
-            L = normalize(-light.direction);
+            L = normalize(light.direction);
             break;
         case LIGHT_POINT:
             {
@@ -62,7 +62,7 @@ float3 getLightVector(Light light, float3 position, out float attenuation)
                 float distance = length(toLight);
                 L = toLight / distance;
                 attenuation = calculateAttenuation(distance, light.range);
-                attenuation *= smoothstep(light.outerCutoff, light.innerCutoff, dot(-L, light.direction));
+                attenuation = smoothstep(light.outerCutoff, light.innerCutoff, dot(-L, light.direction));
             }
                 break;
     }
