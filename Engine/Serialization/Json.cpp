@@ -72,22 +72,6 @@ namespace nu::json
         return true;
     }
 
-    bool Read(const value_t& value, const std::string& name, bool& data, bool required)
-    {
-        // check if the value has the "<name>" and the correct data type
-        if (!value.HasMember(name.c_str()) || !value[name.c_str()].IsBool()) 
-        {
-            if (required)
-                std::cerr << "Could not read JSON value (bool): " << name << std::endl;
-            return false;
-        }
-
-        // get the data
-        data = value[name.c_str()].GetBool();
-
-        return true;
-    }
-
     bool Read(const value_t& value, const std::string& name, float& data, bool required)
     {
         // check if the value has the "<name>" and the correct data type
@@ -100,6 +84,22 @@ namespace nu::json
 
         // get the data
         data = value[name.c_str()].GetFloat();
+
+        return true;
+    }
+
+    bool Read(const value_t& value, const std::string& name, bool& data, bool required)
+    {
+        // check if the value has the "<name>" and the correct data type
+        if (!value.HasMember(name.c_str()) || !value[name.c_str()].IsBool()) 
+        {
+            if (required)
+                std::cerr << "Could not read JSON value (bool): " << name << std::endl;
+            return false;
+        }
+
+        // get the data
+        data = value[name.c_str()].GetBool();
 
         return true;
     }
