@@ -30,6 +30,7 @@ namespace nu
 		const Pipeline& GetPipeline() const { return m_pipeline; }
 		const res_t<Texture>& GetDefaultTexture() const { return m_defaultTexture; }
 
+		friend class Renderer;
 	private:
 		res_t<Shader> m_vertexShader;
 		res_t<Shader> m_fragmentShader;

@@ -8,8 +8,10 @@ namespace nu
 	public:
 		CLASS_PROTOTYPE(MaterialComponent)
 
-			void Draw(const Renderer& renderer) override;
+		void Draw(const Renderer& renderer) override;
+
 
 	private:
+
 	};
 }
