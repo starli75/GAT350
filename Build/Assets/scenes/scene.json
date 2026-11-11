@@ -62,13 +62,39 @@
       "type": "Actor",
       "tag": "Ogre",
       "transform": {
-        "position": [ 0, 0, 0 ]
+        "position": [ 2, 0, 0 ]
       },
       "components": [
         {
           "type": "ModelComponent",
           "model": "models/ogre.obj",
           "materials": [ "materials/ogre.instance.json" ]
+        }
+      ]
+    },
+    {
+      "name": "Helmet",
+      "type": "Actor",
+      "transform": {
+        "position": [ 0, 0, 0 ]
+      },
+      "components": [
+        {
+          "type": "ModelComponent",
+          "model": "models/flight-helmet/flighthelmet.gltf"
+        }
+      ]
+    },
+    {
+      "name": "Cubone",
+      "type": "Actor",
+      "transform": {
+        "position": [ -2, 0, 0 ]
+      },
+      "components": [
+        {
+          "type": "ModelComponent",
+          "model": "models/cubone.glb"
         }
       ]
     }
