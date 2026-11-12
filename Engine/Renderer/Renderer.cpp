@@ -93,19 +93,18 @@ namespace nu
             return false;
         }
 
-
-        SDL_GPUTexture* swapchainTexture = nullptr;
-        if (!SDL_WaitAndAcquireGPUSwapchainTexture(m_commandBuffer, m_window, &swapchainTexture, nullptr, nullptr))
+        m_swapchainTexture = nullptr;
+        if (!SDL_WaitAndAcquireGPUSwapchainTexture(m_commandBuffer, m_window, &m_swapchainTexture, nullptr, nullptr))
         {
             std::cerr << "Could not acquire swapchain texture: " << SDL_GetError() << std::endl;
             return false;
         }
 
-        if (swapchainTexture != nullptr)
+        if (m_swapchainTexture != nullptr)
         {
             // configure the color target attachments (This handles clearing the screen)
             SDL_GPUColorTargetInfo color_target_info{};
-            color_target_info.texture = swapchainTexture;
+            color_target_info.texture = m_swapchainTexture;
             color_target_info.clear_color = SDL_FColor{ 0.3f, 0.3f, 0.3f, 1.0f };
             color_target_info.load_op = SDL_GPU_LOADOP_CLEAR;
             color_target_info.store_op = SDL_GPU_STOREOP_STORE;
@@ -127,11 +126,7 @@ namespace nu
 
     bool Renderer::EndFrame()
     {
-        if (m_renderPass)
-        {
-            SDL_EndGPURenderPass(m_renderPass);
-            m_renderPass = nullptr;
-        }
+        EndRenderPass();
 
         if (!SDL_SubmitGPUCommandBuffer(m_commandBuffer))
         {
@@ -140,8 +135,18 @@ namespace nu
         }
 
         m_commandBuffer = nullptr;
+        m_swapchainTexture = nullptr;
 
         return true;
+    }
+
+    void Renderer::EndRenderPass()
+    {
+        if (m_renderPass)
+        {
+            SDL_EndGPURenderPass(m_renderPass);
+            m_renderPass = nullptr;
+        }
     }
 
     void Renderer::DrawPoint(float x, float y) const

@@ -4,6 +4,7 @@
 #include "Core/GameTime.h"
 #include "Input/Input.h"
 #include "Audio/Audio.h"
+#include "Editor/Editor.h"
 
 #include "Core/Singleton.h"
 #include <memory>
@@ -23,6 +24,8 @@ namespace nu
 		Audio& GetAudio() { return *m_audio; }
 		Time& GetTime() { return m_time; }
 
+		Editor& GetEditor() { return *m_editor; }
+
 	private:
 		friend class Singleton<Engine>;
 		Engine() = default;
@@ -31,6 +34,8 @@ namespace nu
 		std::unique_ptr<Input> m_input;
 		std::unique_ptr<Renderer> m_renderer;
 		std::unique_ptr<Audio> m_audio;
+
+		std::unique_ptr<Editor> m_editor;
 
 		Time m_time;
 	};

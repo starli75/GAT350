@@ -11,10 +11,12 @@ namespace nu
 		m_renderer = std::make_unique<Renderer>();
 		m_audio = std::make_unique<Audio>();
 		m_input = std::make_unique<Input>();
+		m_editor = std::make_unique<Editor>();
 
 		m_renderer->Initialize("Game Engine", 1280, 1024);
 		m_audio->Initialize();
 		m_input->Initialize();
+		m_editor->Initialize(*m_renderer);
 
 		return true;
 	}
@@ -24,6 +26,7 @@ namespace nu
 		m_input->Shutdown();
 		m_audio->Shutdown();
 		m_renderer->Shutdown();
+		m_editor->Shutdown();
 	}
 
 	void Engine::Update()
