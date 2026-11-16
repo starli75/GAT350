@@ -49,6 +49,8 @@ namespace nu
 		void SetMaterial(const class MaterialInstance& materialInstance) const;
 
 		void CreateDepthBuffer();
+		void SetClearColor(const glm::vec3 clearColor) { m_clearColor = clearColor; };
+		const glm::vec3& GetClearColor() const { return m_clearColor; };
 
 		friend class TextRenderer;
 		friend class Texture;
@@ -69,5 +71,7 @@ namespace nu
 
 		int m_width = 0;
 		int m_height = 0;
+
+		glm::vec3 m_clearColor{ 0 };
 	};
 }

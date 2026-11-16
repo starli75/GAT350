@@ -1,5 +1,6 @@
 #pragma once
 #include "Serialization/Json.h"
+#include "Editor/Editor.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
@@ -8,11 +9,12 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/norm.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 
 namespace nu
 {
-    struct Transform
+    struct Transform : public IGui
     {
         glm::vec3 position{ 0.0f };
         glm::quat rotation{ glm::identity<glm::quat>()};
@@ -20,6 +22,7 @@ namespace nu
 
         void SetRotation(const glm::vec3& euler) { rotation = glm::quat(glm::radians(euler)); }
         void SetRotation(const glm::quat& qrotation) { rotation = glm::normalize(qrotation); }
+        glm::vec3 GetRotation() const { return glm::degrees(glm::eulerAngles(rotation)); }
 
         glm::mat4 GetMatrix() const
         {
