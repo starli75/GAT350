@@ -35,8 +35,7 @@
         {
           "type": "LightComponent",
           "light_type": "directional",
-          "color": [ 0.5, 0.5, 0.5 ],
-          "intensity": 1.0
+          "color": [ 1, 0.75, 0.25 ]
         }
       ]
     },
@@ -58,30 +57,16 @@
       ]
     },
     {
-      "name": "Ogre",
+      "name": "PumpkinCat",
       "type": "Actor",
-      "tag": "Ogre",
       "transform": {
-        "position": [ 2, 0, 0 ]
+        "position": [ -1.5, -1.80, -1 ],
+        "scale": [2, 2, 2]
       },
       "components": [
         {
           "type": "ModelComponent",
-          "model": "models/ogre.obj",
-          "materials": [ "materials/ogre.instance.json" ]
-        }
-      ]
-    },
-    {
-      "name": "Helmet",
-      "type": "Actor",
-      "transform": {
-        "position": [ 0, 0, 0 ]
-      },
-      "components": [
-        {
-          "type": "ModelComponent",
-          "model": "models/flight-helmet/flighthelmet.gltf"
+          "model": "models/pumpkin_cat.glb"
         }
       ]
     },
@@ -89,12 +74,55 @@
       "name": "Cubone",
       "type": "Actor",
       "transform": {
-        "position": [ -2, 0, 0 ]
+        "position": [ -1.25, -1.80, 0 ],
+        "rotation": [0, 90, 0]
       },
       "components": [
         {
           "type": "ModelComponent",
           "model": "models/cubone.glb"
+        }
+      ]
+    },
+    {
+      "name": "Forest",
+      "type": "Actor",
+      "transform": {
+        "position": [ 0, 0, 0 ],
+        "scale": [ 20, 20, 20 ]
+      },
+      "components": [
+        {
+          "type": "ModelComponent",
+          "model": "models/forest_scene.glb"
+        }
+      ]
+    },
+    {
+      "name": "Tubbs",
+      "type": "Actor",
+      "transform": {
+        "position": [ 0, -2, 0 ],
+        "scale": [ 2, 2, 2 ]
+      },
+      "components": [
+        {
+          "type": "ModelComponent",
+          "model": "models/tubbs_the_cat.glb"
+        }
+      ]
+    },
+    {
+      "name": "Flower",
+      "type": "Actor",
+      "transform": {
+        "position": [ -0.5, -2.3, -0.75 ],
+        "scale": [ 0.45, 0.45, 0.45 ]
+      },
+      "components": [
+        {
+          "type": "ModelComponent",
+          "model": "models/rose.glb"
         }
       ]
     }
