@@ -100,7 +100,7 @@ namespace nu
 		scene.UpdateGui();
 		ImGui::Separator();
 
-		for (auto actor : scene.GetActors())
+		for (auto& actor : scene.GetActors())
 		{
 			ImGui::PushID(actor.get());
 			if (ImGui::Selectable(actor->GetName().c_str(), m_selected == actor.get()))

@@ -61,8 +61,10 @@ namespace nu
 
 		for (auto light : lights)
 		{
+			if (!light->IsActive()) continue;
+
 			auto lightComponent = light->GetComponent<LightComponent>();
-			if (lightComponent)
+			if (lightComponent && lightComponent->IsActive())
 			{
 				lightUniform.lights[lightUniform.count++] = lightComponent->GetLightData();
 			}

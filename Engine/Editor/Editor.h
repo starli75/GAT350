@@ -8,7 +8,7 @@ namespace nu
 {
 	class Renderer;
 
-	class IGUI
+	class IGui
 	{
 	public:
 		virtual void UpdateGui() = 0;
