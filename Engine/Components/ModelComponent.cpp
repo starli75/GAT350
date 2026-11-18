@@ -58,4 +58,8 @@ namespace nu
 
 
 	}
+	void ModelComponent::UpdateGui()
+	{
+		ImGui::Text("Model", &m_model);
+	}
 }

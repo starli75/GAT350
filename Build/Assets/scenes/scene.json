@@ -129,7 +129,7 @@
     {
       "name": "Plane",
       "type": "Actor",
-      "tag":  "Sphere",
+      "tag": "Sphere",
       "transform": {
         "position": [ 0, 0, 3 ],
         "scale": [ 1, 1, 1 ]
@@ -138,7 +138,23 @@
         {
           "type": "ModelComponent",
           "model": "models/plane.obj",
-          "materials":  ["materials/ground.instance.json"]
+          "materials": [ "materials/ground.instance.json" ]
+        }
+      ]
+    },
+    {
+      "name": "Cube",
+      "type": "Actor",
+      "tag": "Cube",
+      "transform": {
+        "position": [ 0, 0, 3 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "ModelComponent",
+          "model": "models/cube.obj",
+          "materials": [ "materials/lava.instance.json" ]
         }
       ]
     }
