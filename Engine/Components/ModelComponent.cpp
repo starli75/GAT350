@@ -60,6 +60,19 @@ namespace nu
 	}
 	void ModelComponent::UpdateGui()
 	{
-		ImGui::Text("Model", &m_model);
+		ImGui::Text("Model Name: %s", m_model.get()->GetName().c_str());
+		
+		if (!m_materials.empty())
+		{
+			for (const auto& material : m_materials)
+			{
+				ImGui::Text(material->GetName().c_str());
+			}
+		}
+		else
+		{
+			ImGui::Text("m_materials is empty");
+		}
+		
 	}
 }

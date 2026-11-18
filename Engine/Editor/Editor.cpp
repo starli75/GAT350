@@ -120,6 +120,12 @@ namespace nu
 		if (m_selected)
 		{
 			m_selected->UpdateGui();
+
+			//if (strstr(m_selected->GetName().c_str(), "textures/"))
+			//{
+			//	//ImGui::Image(m_selected-, ImVec2(128, 128));
+			//}
+			
 		}
 		ImGui::End();
 	}

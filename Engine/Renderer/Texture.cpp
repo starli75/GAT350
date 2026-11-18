@@ -225,4 +225,10 @@ namespace nu
 		// texture created and uploaded successfully
 		return true;
 	}
+	void Texture::UpdateGui()
+	{
+		ImGui::Text("Width: %d", m_width);
+		ImGui::Text("Height: %d", m_height);
+		ImGui::Image(m_gpuTexture, ImVec2(128, 128));
+	}
 }
