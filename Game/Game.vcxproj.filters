@@ -11,6 +11,9 @@
     <Filter Include="Assets\Materials">
       <UniqueIdentifier>{1b3acf29-7919-4ea9-9931-bb9308d6e5b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\Textures">
+      <UniqueIdentifier>{dbd62e12-fff3-4770-92a7-2d6436ccf437}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />

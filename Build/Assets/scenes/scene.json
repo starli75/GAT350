@@ -157,6 +157,21 @@
           "materials": [ "materials/lava.instance.json" ]
         }
       ]
+    },
+    {
+      "name": "Ogre",
+      "type": "Actor",
+      "tag": "Ogre",
+      "transform": {
+        "position": [ 0, 0, 0 ]
+      },
+      "components": [
+        {
+          "type": "ModelComponent",
+          "model": "models/ogre.obj",
+          "materials": [ "materials/ogre.instance.json" ]
+        }
+      ]
     }
   ]
 }
