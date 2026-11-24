@@ -1,0 +1,6 @@
+{
+	"type": "material",
+	"vertex_shader": "shaders/phong.vert",
+	"fragment_shader": "shaders/phong.frag",
+	"textures": [ "cube_map" ]
+}

@@ -33,6 +33,13 @@ cbuffer MaterialUniforms : register(MATERIAL_SLOT, FRAGMENT_UNIFORM_SPACE)
     Material material;
 }
 
+cbuffer Light : register(b0, space3)
+{
+    float3 lightPosition;
+    float3 lightColor;
+    float3 ambient;
+}
+
 struct Input
 {
     float2 texcoord : TEXCOORD0;
