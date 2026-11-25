@@ -3,7 +3,7 @@
 Texture2D<float4> u_texture : register(t0, space2);
 SamplerState u_sampler : register(s0, space2);
 
-cbuffer MaterialUniforms : register(b2, space3)
+cbuffer MaterialUniforms : register(b0, space3)
 {
     Material material;
 }

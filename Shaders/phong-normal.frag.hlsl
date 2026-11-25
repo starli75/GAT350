@@ -10,8 +10,8 @@ SamplerState specular_sampler : register(s1, FRAGMENT_TEXTURE_SPACE);
 Texture2D<float4> emissive_texture : register(t2, FRAGMENT_TEXTURE_SPACE);
 SamplerState emissive_sampler : register(s2, FRAGMENT_TEXTURE_SPACE);
 
-Texture2D<float4> normal_texture : register(t2, FRAGMENT_TEXTURE_SPACE);
-SamplerState normal_sampler : register(s2, FRAGMENT_TEXTURE_SPACE);
+Texture2D<float4> normal_texture : register(t3, FRAGMENT_TEXTURE_SPACE);
+SamplerState normal_sampler : register(s3, FRAGMENT_TEXTURE_SPACE);
 
 cbuffer ObjectUniforms : register(OBJECT_SLOT, FRAGMENT_UNIFORM_SPACE)
 {
@@ -33,12 +33,6 @@ cbuffer MaterialUniforms : register(MATERIAL_SLOT, FRAGMENT_UNIFORM_SPACE)
     Material material;
 }
 
-cbuffer Light : register(b0, space3)
-{
-    float3 lightPosition;
-    float3 lightColor;
-    float3 ambient;
-}
 
 struct Input
 {
@@ -65,6 +59,8 @@ Output main(Input input)
     float3 specular = 0;
     
     float3 normal = normal_texture.Sample(normal_sampler, input.texcoord).rgb * 2.0 - 1.0;
+    normal.xy *= material.normalStrength;
+    
     float3 nNormal = normalize(input.normal);
     
     float3 T = normalize(input.tangent);
@@ -76,7 +72,7 @@ Output main(Input input)
     float3 V = normalize(frame.cameraPosition - input.worldPosition);
     for (uint i = 0; i < lights.count; i++)
     {
-        calculateLighting(lights.lights[i], material, input.worldPosition, normalize(input.normal), V, diffuse, specular);
+        calculateLighting(lights.lights[i], material, input.worldPosition, N, V, diffuse, specular);
     }
     
     output.color = float4(

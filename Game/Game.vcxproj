@@ -192,6 +192,7 @@
     <None Include="..\Build\Assets\materials\multi.material.json" />
     <None Include="..\Build\Assets\materials\ogre.instance.json" />
     <None Include="..\Build\Assets\materials\phong-default.material.json" />
+    <None Include="..\Build\Assets\materials\phong-normal.material.json" />
     <None Include="..\Build\Assets\materials\phong.material.json" />
     <None Include="..\Build\Assets\materials\skybox.instance.json" />
     <None Include="..\Build\Assets\materials\skybox.material.json" />

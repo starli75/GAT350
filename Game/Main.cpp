@@ -12,7 +12,7 @@ int main()
     Engine::Instance().Initialize();
 
     Scene scene;
-    scene.Load("scenes/scene-skybox.json");
+    scene.Load("scenes/scene.json");
 
     auto& renderer = Engine::Instance().GetRenderer();
 

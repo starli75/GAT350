@@ -55,5 +55,8 @@
     <None Include="..\Build\Assets\scenes\scene-skybox.json">
       <Filter>Assets\Scenes</Filter>
     </None>
+    <None Include="..\Build\Assets\materials\phong-normal.material.json">
+      <Filter>Assets\Materials</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -53,11 +53,12 @@ Output main(Input input)
     float3 diffuse = lights.ambient;
     float3 specular = 0;
     
+    float3 N = normalize(input.normal);
     float3 V = normalize(frame.cameraPosition - input.worldPosition);
     
     for (uint i = 0; i < lights.count; i++)
     {
-        calculateLighting(lights.lights[i], material, input.worldPosition, normalize(input.normal), V, diffuse, specular);
+        calculateLighting(lights.lights[i], material, input.worldPosition, N, V, diffuse, specular);
     }
     
     output.color = float4(
